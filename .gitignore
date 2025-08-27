@@ -1,0 +1,40 @@
+# Dependencies
+/node_modules
+/.dart_tool
+/.idea
+/.pub-cache
+
+# Build outputs
+/build
+*/build
+
+# IDE files
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
+# Log files
+*.log
+
+# Environment files
+.env
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# VS Code
+.vscode/
+
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.xcuserdatad
+*.xcworkspace
+*.xcodeproj/xcuserdata

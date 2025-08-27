@@ -1,0 +1,17 @@
+{
+  "name": "apple-pay-fullstack",
+  "version": "1.0.0",
+  "description": "Full stack solution for Apple Pay subscriptions",
+  "scripts": {
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd .. && flutter run",
+    "start:backend": "cd server && npm start",
+    "install:all": "npm install && cd server && npm install",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd .. && flutter run",
+    "dev:backend": "cd server && npm run dev"
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
