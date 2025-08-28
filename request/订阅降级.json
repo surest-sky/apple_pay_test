@@ -1,0 +1,26 @@
+{
+  "notificationType": "DID_CHANGE_RENEWAL_PREF",
+  "subtype": "DOWNGRADE",
+  "notificationUUID": "123e4567-e89b-12d3-a456-426614174002",
+  "data": {
+    "appAppleId": 1671395306,
+    "bundleId": "com.dotdotbear.kwh",
+    "bundleVersion": "2024121002",
+    "environment": "Sandbox",
+    "signedRenewalInfo": {
+      "originalTransactionId": "2000000800763101",
+      "autoRenewProductId": "month",
+      "productId": "month",
+      "autoRenewStatus": 1,
+      "renewalPrice": 12000,
+      "currency": "CNY",
+      "signedDate": 1756040629082,
+      "environment": "Sandbox",
+      "recentSubscriptionStartDate": 1756004558000,
+      "renewalDate": 1756044276000
+    },
+    "status": 1
+  },
+  "version": "2.0",
+  "signedDate": 1756040629101
+}

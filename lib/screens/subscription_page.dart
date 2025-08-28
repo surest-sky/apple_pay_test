@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 // 导入 PlatformException
 import 'package:apppay/models/subscription_product.dart';
 import 'package:apppay/services/subscription_service.dart';
+import 'package:apppay/services/api_service.dart';
+import 'package:apppay/utils/debug_helper.dart';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({super.key});
@@ -28,6 +30,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     _subscriptionService.onPurchaseSuccess = (String message) {
       setState(() {
         _message = message;
+        _isLoading = false; // 确保加载状态被重置
       });
       // 显示成功对话框
       _showSuccessDialog(message);
@@ -45,6 +48,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     _subscriptionService.onPurchasePending = () {
       setState(() {
         _message = '购买处理中...';
+        // 不要设置 _isLoading = false，保持加载状态
       });
     };
 
@@ -66,7 +70,20 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       _showInfoDialog('产品已拥有', message);
     };
 
-    await _subscriptionService.init();
+    try {
+      await _subscriptionService.init();
+
+      // 在Debug模式下运行诊断
+      if (const bool.fromEnvironment('dart.vm.product') == false) {
+        await DebugHelper.debugInAppPurchaseSetup();
+      }
+    } catch (e) {
+      print('初始化订阅服务时发生错误: $e');
+      setState(() {
+        _message = '初始化失败: $e';
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _loadProducts() async {
@@ -84,20 +101,48 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   }
 
   Future<void> _purchaseProduct(SubscriptionProduct product) async {
+    // 记录购买尝试
+    DebugHelper.logPurchaseAttempt(product.id);
+
     setState(() {
       _isLoading = true;
       _message = '正在处理购买...';
     });
 
     try {
-      await _subscriptionService.purchaseProduct(product.id);
+      // 添加总体超时处理
+      await _subscriptionService.purchaseProduct(product.id).timeout(
+        const Duration(seconds: 60), // 总超时时间60秒
+        onTimeout: () {
+          DebugHelper.logPurchaseResult(product.id, '超时', '购买请求超时');
+          setState(() {
+            _isLoading = false;
+            _message = '购买超时';
+          });
+          _showErrorDialog(
+              '购买请求超时，请检查网络连接后重试\n\n可能的原因：\n1. 网络连接问题\n2. App Store服务器响应慢\n3. 产品ID配置错误');
+          throw Exception('购买超时');
+        },
+      );
     } catch (e) {
       // 处理购买过程中可能发生的异常
-      setState(() {
-        _isLoading = false;
-        _message = '购买过程中发生错误';
-      });
-      _showErrorDialog('购买过程中发生错误: $e');
+      print('UI层捕获到异常: $e');
+      DebugHelper.logPurchaseResult(product.id, '错误', e.toString());
+
+      if (!e.toString().contains('购买超时')) {
+        setState(() {
+          _isLoading = false;
+          _message = '购买过程中发生错误';
+        });
+
+        String errorMessage = '购买过程中发生错误: $e';
+        if (e.toString().contains('未找到产品')) {
+          errorMessage +=
+              '\n\n这通常表示：\n1. 产品ID配置错误\n2. App Store Connect中产品未正确设置\n3. Bundle ID不匹配';
+        }
+
+        _showErrorDialog(errorMessage);
+      }
     }
   }
 
@@ -116,6 +161,83 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
     // 显示成功对话框
     _showSuccessDialog('恢复购买请求已发送，请检查您的购买记录');
+  }
+
+  Future<void> _runDebugCheck() async {
+    setState(() {
+      _isLoading = true;
+      _message = '正在运行调试检查...';
+    });
+
+    try {
+      await DebugHelper.debugInAppPurchaseSetup();
+      setState(() {
+        _isLoading = false;
+        _message = '调试检查完成，请查看控制台日志';
+      });
+      _showInfoDialog('调试检查',
+          '调试检查已完成，详细信息请查看控制台日志。\n\n如果发现产品ID未找到，请检查App Store Connect配置。');
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _message = '调试检查失败: $e';
+      });
+      _showErrorDialog('调试检查失败: $e');
+    }
+  }
+
+  Future<void> _checkBackendStatus() async {
+    setState(() {
+      _isLoading = true;
+      _message = '正在检查后端订阅状态...';
+    });
+
+    try {
+      final result =
+          await ApiService.getUserSubscriptionStatus('test-user-001');
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (result['success'] == true) {
+        final data = result['data']['data'];
+        final userInfo = data['user'];
+        final subscriptionInfo = data['subscription'];
+
+        String statusMessage = '后端订阅状态:\n';
+        statusMessage += '用户ID: ${userInfo['userId']}\n';
+        statusMessage += '订阅状态: ${userInfo['subscriptionStatus']}\n';
+        statusMessage += '订阅类型: ${userInfo['subscriptionType'] ?? '无'}\n';
+        statusMessage += '过期时间: ${userInfo['subscriptionExpiryDate'] ?? '无'}\n';
+        statusMessage += '最后验证: ${userInfo['lastVerifiedAt'] ?? '无'}\n';
+
+        if (subscriptionInfo != null) {
+          statusMessage += '\n订阅详情:\n';
+          statusMessage += '产品ID: ${subscriptionInfo['productId']}\n';
+          statusMessage += '状态: ${subscriptionInfo['status']}\n';
+          statusMessage += '购买时间: ${subscriptionInfo['purchaseDate']}\n';
+          statusMessage += '过期时间: ${subscriptionInfo['expiryDate']}\n';
+        }
+
+        setState(() {
+          _message = '后端状态检查完成';
+        });
+
+        _showInfoDialog('后端订阅状态', statusMessage);
+      } else {
+        setState(() {
+          _message = '后端状态检查失败';
+        });
+        _showErrorDialog('检查后端状态失败: ${result['error']}');
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _message = '检查后端状态时发生错误';
+      });
+      _showErrorDialog('检查后端状态失败: $e');
+    }
   }
 
   void _showCancelDialog() {
@@ -260,21 +382,65 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               ),
             const SizedBox(height: 24),
             if (!_isLoading)
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _restorePurchases,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _restorePurchases,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        '恢复购买',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    '恢复购买',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
+                  const SizedBox(height: 8),
+                  // Debug模式下显示调试按钮
+                  if (const bool.fromEnvironment('dart.vm.product') == false)
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed: _runDebugCheck,
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: const Text(
+                              '🔍 调试检查',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed: _checkBackendStatus,
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: const Text(
+                              '🖥️ 检查后端状态',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
               ),
             const SizedBox(height: 16),
             if (_message.isNotEmpty)

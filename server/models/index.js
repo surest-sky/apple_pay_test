@@ -19,8 +19,19 @@ const userSchema = new mongoose.Schema(
     },
     subscriptionStatus: {
       type: String,
-      enum: ["active", "expired", "cancelled", "grace_period", "refunded"],
+      enum: [
+        "active",
+        "expired",
+        "cancelled",
+        "grace_period",
+        "refunded",
+        "pending_verification",
+      ],
       default: "expired",
+    },
+    status: {
+      type: String,
+      default: null,
     },
     subscriptionType: {
       type: String,
@@ -81,12 +92,19 @@ const subscriptionSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["active", "expired", "cancelled", "grace_period", "refunded"],
+      enum: [
+        "active",
+        "expired",
+        "cancelled",
+        "grace_period",
+        "refunded",
+        "pending_verification",
+      ],
       default: "active",
     },
     receiptData: {
       type: String,
-      required: true,
+      required: false,
     },
     latestReceiptData: {
       type: String,
@@ -103,7 +121,7 @@ const subscriptionSchema = new mongoose.Schema(
     },
     price: {
       type: Number,
-      required: true,
+      required: false,
     },
     currency: {
       type: String,
@@ -118,6 +136,14 @@ const subscriptionSchema = new mongoose.Schema(
       default: null,
     },
     gracePeriodDate: {
+      type: Date,
+      default: null,
+    },
+    restoredAt: {
+      type: Date,
+      default: null,
+    },
+    verifiedAt: {
       type: Date,
       default: null,
     },

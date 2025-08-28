@@ -1,0 +1,253 @@
+{
+  "notifications": [
+    {
+      "notificationType": "DID_RENEW",
+      "subtype": "RENEWAL",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000991064386",
+          "originalTransactionId": "2000000800763101",
+          "productId": "month",
+          "purchaseDate": 1756040676000,
+          "expiresDate": 1756044276000,
+          "transactionReason": "RENEWAL",
+          "signedDate": 1756040629082,
+          "environment": "Sandbox",
+          "storefront": "CHN",
+          "currency": "CNY",
+          "price": 12000
+        },
+        "signedRenewalInfo": {
+          "originalTransactionId": "2000000800763101",
+          "autoRenewProductId": "month",
+          "productId": "month",
+          "autoRenewStatus": 1,
+          "renewalDate": 1756044276000,
+          "signedDate": 1756040629082,
+          "environment": "Sandbox"
+        }
+      }
+    },
+    {
+      "notificationType": "DID_CHANGE_RENEWAL_STATUS",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000991064387",
+          "originalTransactionId": "2000000800763101",
+          "productId": "month",
+          "purchaseDate": 1756040676000,
+          "expiresDate": 1756044276000,
+          "transactionReason": "RENEWAL",
+          "signedDate": 1756044276082,
+          "environment": "Sandbox"
+        },
+        "signedRenewalInfo": {
+          "originalTransactionId": "2000000800763101",
+          "autoRenewProductId": "month",
+          "productId": "month",
+          "autoRenewStatus": 0,
+          "renewalDate": 1756044276000,
+          "signedDate": 1756044276082,
+          "environment": "Sandbox"
+        }
+      }
+    },
+    {
+      "notificationType": "DID_CHANGE_RENEWAL_PREF",
+      "subtype": "DOWNGRADE",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000991064388",
+          "originalTransactionId": "2000000800763101",
+          "productId": "week",
+          "purchaseDate": 1756040676000,
+          "expiresDate": 1756041276000,
+          "transactionReason": "PURCHASE",
+          "signedDate": 1756040676082,
+          "environment": "Sandbox"
+        },
+        "signedRenewalInfo": {
+          "originalTransactionId": "2000000800763101",
+          "autoRenewProductId": "week",
+          "productId": "week",
+          "autoRenewStatus": 1,
+          "renewalDate": 1756041276000,
+          "signedDate": 1756040676082,
+          "environment": "Sandbox"
+        }
+      }
+    },
+    {
+      "notificationType": "DID_FAIL_TO_RENEW",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000991064389",
+          "originalTransactionId": "2000000800763101",
+          "productId": "month",
+          "purchaseDate": 1756040676000,
+          "expiresDate": 1756044276000,
+          "transactionReason": "RENEWAL",
+          "signedDate": 1756044276082,
+          "environment": "Sandbox"
+        },
+        "signedRenewalInfo": {
+          "originalTransactionId": "2000000800763101",
+          "autoRenewProductId": "month",
+          "productId": "month",
+          "autoRenewStatus": 1,
+          "renewalDate": 1756044276000,
+          "signedDate": 1756044276082,
+          "environment": "Sandbox",
+          "expirationIntent": 4
+        }
+      }
+    },
+    {
+      "notificationType": "EXPIRED",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000991064390",
+          "originalTransactionId": "2000000800763101",
+          "productId": "month",
+          "purchaseDate": 1756040676000,
+          "expiresDate": 1756044276000,
+          "transactionReason": "RENEWAL",
+          "signedDate": 1756044276082,
+          "environment": "Sandbox"
+        },
+        "signedRenewalInfo": {
+          "originalTransactionId": "2000000800763101",
+          "autoRenewProductId": "month",
+          "productId": "month",
+          "autoRenewStatus": 0,
+          "renewalDate": 1756044276000,
+          "signedDate": 1756044276082,
+          "environment": "Sandbox",
+          "expirationIntent": 2
+        }
+      }
+    },
+    {
+      "notificationType": "REFUND",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000991064391",
+          "originalTransactionId": "2000000800763101",
+          "productId": "month",
+          "purchaseDate": 1756040676000,
+          "expiresDate": 1756044276000,
+          "transactionReason": "RENEWAL",
+          "signedDate": 1756044276082,
+          "environment": "Sandbox"
+        }
+      }
+    },
+    {
+      "notificationType": "PRICE_INCREASE_CONSENT",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000991064392",
+          "originalTransactionId": "2000000800763101",
+          "productId": "month_premium",
+          "purchaseDate": 1756040676000,
+          "expiresDate": 1756044276000,
+          "transactionReason": "RENEWAL",
+          "signedDate": 1756044276082,
+          "environment": "Sandbox",
+          "price": 15000,
+          "currency": "CNY"
+        },
+        "signedRenewalInfo": {
+          "originalTransactionId": "2000000800763101",
+          "autoRenewProductId": "month_premium",
+          "productId": "month",
+          "autoRenewStatus": 1,
+          "priceIncreaseStatus": 1,
+          "renewalDate": 1756044276000,
+          "signedDate": 1756044276082,
+          "environment": "Sandbox"
+        }
+      }
+    },
+    {
+      "notificationType": "PRICE_INCREASE_DENIED",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000991064393",
+          "originalTransactionId": "2000000800763101",
+          "productId": "month",
+          "purchaseDate": 1756040676000,
+          "expiresDate": 1756044276000,
+          "transactionReason": "RENEWAL",
+          "signedDate": 1756044276082,
+          "environment": "Sandbox"
+        },
+        "signedRenewalInfo": {
+          "originalTransactionId": "2000000800763101",
+          "autoRenewProductId": "month",
+          "productId": "month",
+          "autoRenewStatus": 0,
+          "priceIncreaseStatus": 0,
+          "expirationIntent": 5,
+          "renewalDate": 1756044276000,
+          "signedDate": 1756044276082,
+          "environment": "Sandbox"
+        }
+      }
+    },
+    {
+      "notificationType": "DID_RENEW",
+      "subtype": "SUBSCRIBED",
+      "version": "2.0",
+      "data": {
+        "bundleId": "com.yourcompany.yourapp",
+        "environment": "Sandbox",
+        "signedTransactionInfo": {
+          "transactionId": "2000000800763101",
+          "originalTransactionId": "2000000800763101",
+          "productId": "month",
+          "purchaseDate": 1733805213000,
+          "expiresDate": 1733808813000,
+          "transactionReason": "PURCHASE",
+          "signedDate": 1733805213082,
+          "environment": "Sandbox",
+          "appTransactionId": "704790053668310483"
+        },
+        "signedRenewalInfo": {
+          "originalTransactionId": "2000000800763101",
+          "autoRenewProductId": "month",
+          "productId": "month",
+          "autoRenewStatus": 1,
+          "renewalDate": 1733808813000,
+          "signedDate": 1733805213082,
+          "environment": "Sandbox",
+          "appTransactionId": "704790053668310483"
+        }
+      }
+    }
+  ]
+}

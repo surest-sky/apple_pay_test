@@ -1,0 +1,48 @@
+{
+  "notificationType": "DID_CHANGE_RENEWAL_STATUS",
+  "subtype": "AUTO_RENEW_DISABLED",
+  "notificationUUID": "123e4567-e89b-12d3-a456-426614174003",
+  "data": {
+    "appAppleId": 1671395306,
+    "bundleId": "com.dotdotbear.kwh",
+    "bundleVersion": "2024121002",
+    "environment": "Sandbox",
+    "signedTransactionInfo": {
+      "transactionId": "2000000991064386",
+      "originalTransactionId": "2000000800763101",
+      "webOrderLineItemId": "2000000109564866",
+      "bundleId": "com.dotdotbear.kwh",
+      "productId": "month",
+      "subscriptionGroupIdentifier": "21579757",
+      "purchaseDate": 1756040676000,
+      "originalPurchaseDate": 1733805213000,
+      "expiresDate": 1756044276000,
+      "quantity": 1,
+      "type": "Auto-Renewable Subscription",
+      "inAppOwnershipType": "PURCHASED",
+      "signedDate": 1756040629082,
+      "environment": "Sandbox",
+      "transactionReason": "RENEWAL",
+      "storefront": "CHN",
+      "storefrontId": "143465",
+      "price": 12000,
+      "currency": "CNY",
+      "appTransactionId": "704790053668310483"
+    },
+    "signedRenewalInfo": {
+      "originalTransactionId": "2000000800763101",
+      "autoRenewProductId": "month",
+      "productId": "month",
+      "autoRenewStatus": 0,
+      "renewalPrice": 12000,
+      "currency": "CNY",
+      "signedDate": 1756040629082,
+      "environment": "Sandbox",
+      "recentSubscriptionStartDate": 1756004558000,
+      "renewalDate": 1756044276000
+    },
+    "status": 2
+  },
+  "version": "2.0",
+  "signedDate": 1756040629101
+}
